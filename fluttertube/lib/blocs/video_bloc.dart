@@ -14,7 +14,7 @@ class VideoBloc implements BlocBase{
     _searchController.stream.listen(_search);
   }
 
-  final _videoController = StreamController<List<Video>>();
+  final _videoController = StreamController<List<dynamic>>();
   final _searchController = StreamController<String>();
 
   Stream get outVideos => _videoController.stream;
@@ -22,7 +22,7 @@ class VideoBloc implements BlocBase{
 
   void _search(String search) async{
     videos = await api.search(search);
-    print(videos);
+    _videoController.sink.add(videos);
   }
 
   @override
