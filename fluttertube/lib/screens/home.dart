@@ -8,7 +8,11 @@ import 'package:fluttertube/widgets/videotile.dart';
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final bloc = BlocProvider.of<VideoBloc>(context);
+
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Container(
           height: 25,
@@ -19,7 +23,12 @@ class Home extends StatelessWidget {
         actions: <Widget>[
           Align(
             alignment: Alignment.center,
-            child: Text(""),
+            child: Text(
+                "0",
+              style: TextStyle(
+                color: Colors.white
+              ),
+            ),
           ),
           IconButton(
               icon: Icon(Icons.star),
@@ -34,21 +43,34 @@ class Home extends StatelessWidget {
                 );
 
                 if(result != null && result.isNotEmpty){
-                  BlocProvider.of<VideoBloc>(context).inSearch.add(result);
+                  bloc.inSearch.add(result);
                 }
               },
           )
         ],
       ),
       body: StreamBuilder(
-        stream: BlocProvider.of<VideoBloc>(context).outVideos,
+        stream: bloc.outVideos,
           builder: (context, snapshot){
             if(snapshot.hasData){
               return ListView.builder(
                   itemBuilder: (context, index){
-                    return VideoTile(snapshot.data[index]);
+                    if(index < snapshot.data.length){
+                      return VideoTile(snapshot.data[index]);
+                    } else {
+                      bloc.inSearch.add(null);
+                      return Container(
+                        height: 40,
+                        width: 40,
+                        alignment: Alignment.center,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                        ),
+                      );
+                    }
+
                   },
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data.length + 1,
               );
             } else {
               return Container();
