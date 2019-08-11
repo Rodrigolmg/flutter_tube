@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertube/blocs/favorite_bloc.dart';
 import 'package:fluttertube/blocs/video_bloc.dart';
 import 'package:fluttertube/utils/data_search.dart';
 import 'package:fluttertube/widgets/videotile.dart';
@@ -9,7 +10,8 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final bloc = BlocProvider.of<VideoBloc>(context);
+    final videoBloc = BlocProvider.of<VideoBloc>(context);
+    final favBloc = BlocProvider.of<FavoriteBloc>(context);
 
     return Scaffold(
       backgroundColor: Colors.black,
@@ -23,11 +25,13 @@ class Home extends StatelessWidget {
         actions: <Widget>[
           Align(
             alignment: Alignment.center,
-            child: Text(
-                "0",
-              style: TextStyle(
-                color: Colors.white
-              ),
+            child: StreamBuilder<dynamic>(
+              initialData: {},
+              stream: favBloc.outFav,
+              builder: (context, snapshot){
+                return snapshot.hasData ? Text("${snapshot.data.length}")
+                    : Container();
+              },
             ),
           ),
           IconButton(
@@ -43,7 +47,7 @@ class Home extends StatelessWidget {
                 );
 
                 if(result != null && result.isNotEmpty){
-                  bloc.inSearch.add(result);
+                  videoBloc.inSearch.add(result);
                 }
               },
           )
@@ -51,7 +55,7 @@ class Home extends StatelessWidget {
       ),
       body: StreamBuilder(
         initialData: [],
-        stream: bloc.outVideos,
+        stream: videoBloc.outVideos,
           builder: (context, snapshot){
             if(snapshot.hasData){
               return ListView.builder(
@@ -59,7 +63,7 @@ class Home extends StatelessWidget {
                     if(index < snapshot.data.length){
                       return VideoTile(snapshot.data[index]);
                     } else if(index > 1){
-                      bloc.inSearch.add(null);
+                      videoBloc.inSearch.add(null);
                       return Container(
                         height: 40,
                         width: 40,
