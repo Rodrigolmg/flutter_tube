@@ -3,14 +3,15 @@ import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:fluttertube/models/video.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoriteBloc implements BlocBase{
 
-  Map<String, dynamic> _favoriteVideos = {};
+  Map<dynamic, dynamic> _favoriteVideos = {};
 
   //Controllers
-  final _favController = StreamController<dynamic>.broadcast();
+  final _favController = BehaviorSubject<dynamic>(seedValue: {});
 
   //Stream
   Stream<dynamic> get outFav => _favController.stream;

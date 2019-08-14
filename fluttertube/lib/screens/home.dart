@@ -5,6 +5,8 @@ import 'package:fluttertube/blocs/video_bloc.dart';
 import 'package:fluttertube/utils/data_search.dart';
 import 'package:fluttertube/widgets/videotile.dart';
 
+import 'favorites.dart';
+
 //fluttertube-248623
 class Home extends StatelessWidget {
   @override
@@ -26,7 +28,6 @@ class Home extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: StreamBuilder<dynamic>(
-              initialData: {},
               stream: favBloc.outFav,
               builder: (context, snapshot){
                 return snapshot.hasData ? Text("${snapshot.data.length}")
@@ -36,7 +37,13 @@ class Home extends StatelessWidget {
           ),
           IconButton(
               icon: Icon(Icons.star),
-              onPressed: (){},
+              onPressed: (){
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => Favorites()
+                    )
+                );
+              },
           ),
           IconButton(
               icon: Icon(Icons.search),

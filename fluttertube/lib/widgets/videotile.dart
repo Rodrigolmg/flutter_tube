@@ -55,7 +55,6 @@ class VideoTile extends StatelessWidget {
                   )
               ),
               StreamBuilder<dynamic>(
-                initialData: {},
                 stream: favBloc.outFav,
                 builder: (context, snapshot){
                   if(snapshot.hasData)
