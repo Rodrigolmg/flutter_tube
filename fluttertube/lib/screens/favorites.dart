@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertube/blocs/favorite_bloc.dart';
+import 'package:fluttertube/models/video.dart';
 
 class Favorites extends StatelessWidget {
 
@@ -19,11 +20,11 @@ class Favorites extends StatelessWidget {
         backgroundColor: Colors.black87,
       ),
       backgroundColor: Colors.black87,
-      body: StreamBuilder<dynamic>(
+      body: StreamBuilder<Map<String, Video>>(
         initialData: {},
           builder: (context, snapshot){
             return ListView(
-              children: snapshot.data.values.map<Widget>(
+              children: snapshot.data.values.map(
                   (video){
                     return InkWell(
                       onTap: (){

@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertube/blocs/favorite_bloc.dart';
 import 'package:fluttertube/blocs/video_bloc.dart';
+import 'package:fluttertube/models/video.dart';
 import 'package:fluttertube/utils/data_search.dart';
 import 'package:fluttertube/widgets/videotile.dart';
 
@@ -27,7 +28,7 @@ class Home extends StatelessWidget {
         actions: <Widget>[
           Align(
             alignment: Alignment.center,
-            child: StreamBuilder<dynamic>(
+            child: StreamBuilder<Map<String, Video>>(
               stream: favBloc.outFav,
               builder: (context, snapshot){
                 return snapshot.hasData ? Text("${snapshot.data.length}")

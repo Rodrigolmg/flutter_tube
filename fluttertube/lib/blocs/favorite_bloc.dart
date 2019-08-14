@@ -8,13 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoriteBloc implements BlocBase{
 
-  Map<dynamic, dynamic> _favoriteVideos = {};
+  Map<String, Video> _favoriteVideos = {};
 
   //Controllers
-  final _favController = BehaviorSubject<dynamic>(seedValue: {});
+  final _favController = BehaviorSubject<Map<String, Video>>(seedValue: {});
 
   //Stream
-  Stream<dynamic> get outFav => _favController.stream;
+  Stream<Map<String, Video>> get outFav => _favController.stream;
 
   FavoriteBloc(){
     SharedPreferences.getInstance().then((prefs){
@@ -23,7 +23,7 @@ class FavoriteBloc implements BlocBase{
             (key, value){
               return MapEntry(key, Video.fromJson(value));
             }
-        );
+        ).cast<String, Video>();
 
         _favController.add(_favoriteVideos);
       }
@@ -37,7 +37,7 @@ class FavoriteBloc implements BlocBase{
     else
       _favoriteVideos[video.id] = video;
 
-    _favController.add(_favoriteVideos);
+    _favController.sink.add(_favoriteVideos);
     _saveFav();
   }
 

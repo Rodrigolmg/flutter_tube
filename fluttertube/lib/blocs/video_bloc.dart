@@ -7,14 +7,14 @@ class VideoBloc implements BlocBase{
 
   Api api;
 
-  List<dynamic> videos;
+  List<Video> videos;
 
   VideoBloc(){
     api = Api();
     _searchController.stream.listen(_search);
   }
 
-  final _videoController = StreamController<List<dynamic>>();
+  final _videoController = StreamController<List<Video>>();
   final _searchController = StreamController<String>();
 
   Stream get outVideos => _videoController.stream;
