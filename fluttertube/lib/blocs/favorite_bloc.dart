@@ -11,7 +11,7 @@ class FavoriteBloc implements BlocBase{
   Map<String, Video> _favoriteVideos = {};
 
   //Controllers
-  final _favController = BehaviorSubject<Map<String, Video>>(seedValue: {});
+  final _favController = BehaviorSubject<Map<String, Video>>();
 
   //Stream
   Stream<Map<String, Video>> get outFav => _favController.stream;

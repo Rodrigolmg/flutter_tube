@@ -9,20 +9,20 @@ class VideoBloc implements BlocBase{
 
   List<Video> videos;
 
+  final _videoController = StreamController<List<Video>>();
+  Stream get outVideos => _videoController.stream;
+
+  final _searchController = StreamController<String>();
+  Sink get inSearch => _searchController.sink;
+
   VideoBloc(){
     api = Api();
     _searchController.stream.listen(_search);
   }
 
-  final _videoController = StreamController<List<Video>>();
-  final _searchController = StreamController<String>();
-
-  Stream get outVideos => _videoController.stream;
-  Sink get inSearch => _searchController.sink;
-
   void _search(String search) async{
 
-    if(search != null && search.isNotEmpty){
+    if(search != null){
       _videoController.sink.add([]);
       videos = await api.search(search);
     } else {
